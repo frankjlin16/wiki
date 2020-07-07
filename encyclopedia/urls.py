@@ -5,7 +5,7 @@ from . import views
 app_name = "wiki"
 
 urlpatterns = [
-	# Homepage
+    # Homepage
     path("", views.index, name="index"),
 
     # For viewing detailed entry
