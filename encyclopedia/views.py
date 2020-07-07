@@ -19,7 +19,7 @@ def index(request):
 
 
 def entry(request, title):
-	context = {"entry": util.get_entry(title), "title": title}
+	context = {"entry": util.get_entry(title), "title": title, "form": SearchForm()}
 	return render(request, "encyclopedia/entry.html", context)
 
 	redirect()
