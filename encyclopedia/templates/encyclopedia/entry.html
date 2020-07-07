@@ -1,0 +1,14 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block body %}
+	{% if entry %}
+    <p>{{ entry }}</p>
+    {% else %}
+    <h1>404. The page doesn't exist... :(</h1>
+    {% endif %}
+
+{% endblock %}
