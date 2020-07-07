@@ -35,3 +35,15 @@ def get_entry(title):
         return f.read().decode("utf-8")
     except FileNotFoundError:
         return None
+
+
+def substring_search(title):
+    """
+    Return a list of encyclopeida entries that includes the substring.
+    """
+    entries = list_entries()
+    sub_list = []
+    for entry in entries:
+        if re.search(title.lower(), entry.lower()):
+            sub_list.append(entry)
+    return sub_list
