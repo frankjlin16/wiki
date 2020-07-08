@@ -47,3 +47,10 @@ def substring_search(title):
         if re.search(title.lower(), entry.lower()):
             sub_list.append(entry)
     return sub_list
+
+def no_entry_conflict(title):
+    entries = list_entries()
+    if title in entries:
+        return False
+    elif title not in entries:
+        return True

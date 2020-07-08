@@ -6,6 +6,7 @@
 
 {% block body %}
     <h1>Add entry:</h1>
+    <h3 style="color: red">This title already exist, try a different title.</h3>
 
     <form action="{% url 'wiki:new_entry' %}" method="post">
         {% csrf_token %}

@@ -10,14 +10,15 @@ class SearchForm(forms.Form):
 
 
 class NewEntryForm(forms.Form):
-    title = forms.CharField()
-    text = forms.CharField()
+    title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Title'}), label=False)
+    text = forms.CharField(widget=forms.Textarea(attrs={'cols':100, 'rows':10, 'placeholder': 'Content here...'}), label=False)
 
 
 def index(request):
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
+            #title = request.POST.get("title")
             title = form.cleaned_data["title"]
             if util.get_entry(title): # Check is title contains an existing entry.
                 return redirect('wiki:entry', title=title)
@@ -45,8 +46,15 @@ def new_entry(request):
         if form.is_valid():
             title = form.cleaned_data["title"]
             text = form.cleaned_data["text"]
-            util.save_entry(title, text)
-            return redirect('wiki:entry', title=title)
+            if util.no_entry_conflict(title):
+                util.save_entry(title, text)
+                return redirect('wiki:entry', title=title)
+            else:
+                context = {"form": SearchForm(), "new_entry_form": form}
+                return render(request, "encyclopedia/new_entry_duplicate.html", context)  
+    
     else:
         context = {"form": SearchForm(), "new_entry_form": NewEntryForm()}
-        return render(request, "encyclopedia/new_entry.html", context)
+
+    
+    return render(request, "encyclopedia/new_entry.html", context)
