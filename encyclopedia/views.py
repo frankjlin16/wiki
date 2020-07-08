@@ -9,6 +9,11 @@ class SearchForm(forms.Form):
     title = forms.CharField(label=False)
 
 
+class NewEntryForm(forms.Form):
+    title = forms.CharField()
+    text = forms.CharField()
+
+
 def index(request):
     if request.method == 'POST':
         form = SearchForm(request.POST)
@@ -32,3 +37,16 @@ def search_result(request, title):
     entries = util.substring_search(title)
     context = {"form": SearchForm(), "entries": entries, "title": title}
     return render(request, "encyclopedia/search_result.html", context)
+
+
+def new_entry(request):
+    if request.method == 'POST':
+        form = NewEntryForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["title"]
+            text = form.cleaned_data["text"]
+            util.save_entry(title, text)
+            return redirect('wiki:entry', title=title)
+    else:
+        context = {"form": SearchForm(), "new_entry_form": NewEntryForm()}
+        return render(request, "encyclopedia/new_entry.html", context)
