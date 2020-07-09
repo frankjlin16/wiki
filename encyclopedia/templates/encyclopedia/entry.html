@@ -6,8 +6,8 @@
 
 {% block body %}
     {% if entry %}
-    <p>{{ entry }}</p>
     <a href="{% url 'wiki:edit' title %}">Edit</a>
+    <p>{{ entry|safe }}</p>
     {% else %}
     <h1>404. The page doesn't exist... :(</h1>
     {% endif %}

@@ -1,4 +1,5 @@
 import re
+from random import randint
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -48,9 +49,19 @@ def substring_search(title):
             sub_list.append(entry)
     return sub_list
 
+
 def no_entry_conflict(title):
+    """Check if title already exist."""
     entries = list_entries()
     if title in entries:
         return False
     elif title not in entries:
         return True
+
+
+def random_entry():
+    """Generate random page to be displayed."""
+    entries = list_entries()
+    entry_number = randint(0 , len(entries)-1)
+    entry = entries[entry_number]
+    return entry

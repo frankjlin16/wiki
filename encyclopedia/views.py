@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django import forms
 from django.http import HttpResponse
-from re import search
+from markdown2 import markdown as md
+
 
 from . import util
 
@@ -33,7 +34,8 @@ def index(request):
 
 
 def entry(request, title):
-    context = {"entry": util.get_entry(title), "title": title, "form": SearchForm()}
+    entry = md(util.get_entry(title))
+    context = {"entry": entry, "title": title, "form": SearchForm()}
     return render(request, "encyclopedia/entry.html", context)
 
 
@@ -77,3 +79,8 @@ def edit(request, title):
         form = EditEntryForm(initial={'text': entry})
     context = {"form": SearchForm(), "title": title, "edit_form": form}
     return render(request, "encyclopedia/edit.html", context) 
+
+
+def random(request):
+    entry = util.random_entry()
+    return redirect('wiki:entry', title=entry)

@@ -15,4 +15,6 @@ urlpatterns = [
     path("new_entry/", views.new_entry, name="new_entry"),
     # Edit an entry
     path("edit/<str:title>/", views.edit, name="edit"),
+    # Generate random page
+    path("random/", views.random, name="random")
 ]
