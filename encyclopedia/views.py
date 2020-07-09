@@ -13,6 +13,9 @@ class NewEntryForm(forms.Form):
     title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Title'}), label=False)
     text = forms.CharField(widget=forms.Textarea(attrs={'cols':100, 'rows':10, 'placeholder': 'Content here...'}), label=False)
 
+class EditEntryForm(forms.Form):
+    text = forms.CharField(widget=forms.Textarea(attrs={'cols':100, 'rows':10, 'placeholder': 'Content here...'}), label=False)
+
 
 def index(request):
     if request.method == 'POST':
@@ -58,3 +61,19 @@ def new_entry(request):
 
     
     return render(request, "encyclopedia/new_entry.html", context)
+
+
+
+def edit(request, title):
+    entry = util.get_entry(title)
+    if request.method == 'POST':
+        form = EditEntryForm(data=request.POST)
+        if form.is_valid():
+            text = form.cleaned_data["text"]
+            util.save_entry(title, text)
+            return redirect('wiki:entry', title=title)
+
+    else:
+        form = EditEntryForm(initial={'text': entry})
+    context = {"form": SearchForm(), "title": title, "edit_form": form}
+    return render(request, "encyclopedia/edit.html", context) 

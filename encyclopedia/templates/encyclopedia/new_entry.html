@@ -10,7 +10,7 @@
     <form action="{% url 'wiki:new_entry' %}" method="post">
         {% csrf_token %}
         {{ new_entry_form.as_p }}
-        <input type="submit" name="submit">
+        <input type="submit" value="Add">
     </form>
 
 {% endblock %}
